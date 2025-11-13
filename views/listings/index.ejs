@@ -1,0 +1,140 @@
+<% layout("/layouts/boilerplate") %>
+<!-- <% if (typeof category === 'undefined') { var category = null; } %> -->
+
+<style>
+ #filter-container {
+  display: flex;
+  flex-wrap: wrap; /* allows wrapping on small screens */
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem;
+  gap: 1rem; /* spacing between filter section and toggle */
+  overflow-x: auto;  
+}
+
+
+#filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem; 
+  align-items: center;
+}
+
+.filter {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  text-decoration: none;
+  color: inherit;
+  opacity: 0.7;
+  min-width: 60px; /* each filter takes more space */
+}
+
+.filter:hover {
+  opacity: 1;
+  cursor: pointer;
+}
+
+.filter.active {
+  opacity: 1;
+  color: #000;
+  border-bottom: 2px solid #000;
+  font-weight: 600;
+}
+
+.filter p {
+  font-size: 0.8rem;
+  margin-top: 0.4rem;
+}
+
+.filter i {
+  font-size: 1.3rem; /* increase icon size */
+}
+
+.tax-info {
+  display: none;
+}
+
+.tax-toggle {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-size: 0.9rem;
+  cursor: pointer;
+  border: 1px solid black;
+  border-radius: 1rem;
+  align-items: center;
+  height: 3rem;
+  margin-left: 3rem;
+  padding: 0 1.2rem; 
+}
+</style>
+
+  <div id="filter-container">
+  <div id="filters">
+    <% const filterCategories = [
+      {name: 'Trending', icon: 'fa-fire', value: 'trending'},
+      {name: 'Rooms', icon: 'fa-bed', value: 'rooms'},
+      {name: 'Iconic Cities', icon: 'fa-mountain-city', value: 'iconic cities'},
+      {name: 'Mountains', icon: 'fa-mountain', value: 'mountains'},
+      {name: 'Castles', icon: 'fa-chess-rook', value: 'castles'},
+      {name: 'Amazing Pool', icon: 'fa-person-swimming', value: 'amazing pool'},
+      {name: 'Camping', icon: 'fa-campground', value: 'camping'},
+      {name: 'Farms', icon: 'fa-cow', value: 'farm'},
+      {name: 'Arctic', icon: 'fa-snowflake', value: 'arctic'},
+    ]; %>
+
+    <% filterCategories.forEach(filter => { %>
+      <a href="/listings?category=<%= filter.value %>" class="filter <%= category === filter.value ? 'active' : '' %>">
+        <div><i class="fa-solid <%= filter.icon %>"></i></div>
+        <p><%= filter.name %></p>
+      </a>
+    <% }) %>
+  </div>
+
+<div class="tax-toggle">
+  <div class="form-check form-switch">
+  <input class="form-check-input" type="checkbox" role="switch" id="switchCheckDefault">
+  <label class="form-check-label" for="switchCheckDefault">Display total after Taxes</label>
+</div>
+
+</div>
+</div>
+
+<div class="row row-cols-lg-3 row-cols-md-2 row-cols-sm-1 mt-3">
+   <% for(let listing of allListings) { %> 
+    <a href="/listings/<%= listing._id %>" class="listing-link"> 
+    <div class="card col listing-card"> 
+    <img src="<%= listing.image.url %>"
+     class="card-img-top" 
+     alt="listing_image"
+      style="height: 20rem" /> 
+      <div class="card-img-overlay">
+      </div>
+       <div class="card-body">
+         <p class="card-text">
+           <b><%= listing.title %></b> <br> 
+           ₹ <%= listing.price.toLocaleString("en-IN") %> / Night <i class="tax-info">
+            &nbsp;&nbsp; +18% GST</i>
+           </p> 
+          </div> 
+        </div> 
+      </a>
+       <% } %>
+   </div>
+
+
+<script>
+  let taxSwitch = document.getElementById("switchCheckDefault");
+  taxSwitch.addEventListener("click", ()=>{
+    let taxInfo = document.getElementsByClassName("tax-info");
+    for(info of taxInfo) {
+      if(info.style.display != "inline") {
+        info.style.display = "inline";
+      }  else {
+         info.style.display = "none";
+      }
+    }
+});
+</script>
