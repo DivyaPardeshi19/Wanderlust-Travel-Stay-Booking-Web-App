@@ -2,22 +2,17 @@
 <!-- <% if (typeof category === 'undefined') { var category = null; } %> -->
 
 <style>
- #filter-container {
-  display: flex;
-  flex-wrap: wrap; /* allows wrapping on small screens */
-  justify-content: space-between;
-  align-items: center;
-  padding: 1rem 2rem;
-  gap: 1rem; /* spacing between filter section and toggle */
-  overflow-x: auto;  
+ /* Filter bar */
+#filter-container {
+  padding: 0.5rem 1rem;
+  overflow-x: auto;
+  gap: 0.5rem;
 }
-
 
 #filters {
   display: flex;
   flex-wrap: wrap;
-  gap: 1rem; 
-  align-items: center;
+  gap: 0.5rem;
 }
 
 .filter {
@@ -28,7 +23,7 @@
   text-decoration: none;
   color: inherit;
   opacity: 0.7;
-  min-width: 60px; /* each filter takes more space */
+  min-width: 60px;
 }
 
 .filter:hover {
@@ -45,34 +40,49 @@
 
 .filter p {
   font-size: 0.8rem;
-  margin-top: 0.4rem;
+  margin-top: 0.2rem;
 }
 
 .filter i {
-  font-size: 1.3rem; /* increase icon size */
+  font-size: 1.2rem;
+}
+
+/* Tax toggle */
+.tax-toggle {
+  flex-shrink: 0;
+  margin-left: 0.5rem;
+}
+
+/* Listing cards */
+.listing-card {
+  transition: transform 0.2s ease;
+}
+
+.listing-card:hover {
+  transform: scale(1.02);
 }
 
 .tax-info {
-  display: none;
+  font-size: 0.85rem;
+  color: #555;
 }
 
-.tax-toggle {
-  display: flex;
-  align-items: center;
-  gap: 0.6rem;
-  font-size: 0.9rem;
-  cursor: pointer;
-  border: 1px solid black;
-  border-radius: 1rem;
-  align-items: center;
-  height: 3rem;
-  margin-left: 3rem;
-  padding: 0 1.2rem; 
+/* Responsive adjustments */
+@media (max-width: 767px) {
+  #filter-container {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .tax-toggle {
+    margin-left: 0;
+    margin-top: 0.5rem;
+  }
 }
 </style>
 
-  <div id="filter-container">
-  <div id="filters">
+  <div id="filter-container" class="d-flex flex-wrap justify-content-between align-items-center gap-2">
+  <div id="filters" class="d-flex flex-wrap gap-2">
     <% const filterCategories = [
       {name: 'Trending', icon: 'fa-fire', value: 'trending'},
       {name: 'Rooms', icon: 'fa-bed', value: 'rooms'},
@@ -93,7 +103,7 @@
     <% }) %>
   </div>
 
-<div class="tax-toggle">
+<div class="tax-toggle d-flex align-items-center gap-2">
   <div class="form-check form-switch">
   <input class="form-check-input" type="checkbox" role="switch" id="switchCheckDefault">
   <label class="form-check-label" for="switchCheckDefault">Display total after Taxes</label>
@@ -102,7 +112,7 @@
 </div>
 </div>
 
-<div class="row row-cols-lg-3 row-cols-md-2 row-cols-sm-1 mt-3">
+<div class="row row-cols-1 row-cols-sm-2 row-cols-md-2 row-cols-lg-3 g-3 mt-3">
    <% for(let listing of allListings) { %> 
     <a href="/listings/<%= listing._id %>" class="listing-link"> 
     <div class="card col listing-card"> 
